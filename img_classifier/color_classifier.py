@@ -15,15 +15,15 @@ def determine_predominant_color(name):
     dominant_color_value = max(dominant_color_tuple)
     dominant_color_index = dominant_color_tuple.index(dominant_color_value)
     if(dominant_color_index == 0):
-        dominant_color_name = "red"
+        dominant_color_name = "R"
     elif(dominant_color_index == 1):
-        dominant_color_name = "green"
+        dominant_color_name = "G"
     else:
-        dominant_color_name = "blue"
+        dominant_color_name = "B"
     print "dominant_color_tuple", dominant_color_tuple
     print "dominant_color_value", dominant_color_value
     return dominant_color_name
 
-img_name = 'saiyayin.jpg'
-dominant_color_name = determine_predominant_color(img_name)
-print "dominant_color_name", dominant_color_name
+#img_name = 'saiyayin.jpg'
+#dominant_color_name = determine_predominant_color(img_name)
+#print "dominant_color_name", dominant_color_name

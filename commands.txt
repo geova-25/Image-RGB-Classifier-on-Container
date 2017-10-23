@@ -26,7 +26,8 @@ docker volume create images
 
 #---------------------Volume setup
 
-sudo docker run -it -p 6666:6666 -v images:/vol img_server_image
+#sudo docker run -it -p 6666:6666 -v images:/vol img_server_image
+sudo docker run -it -p 6666:6666 -v /Users/img_classifier:/carpetaDocker/ img_server_image
 
 #---------------------Run with expose port
 

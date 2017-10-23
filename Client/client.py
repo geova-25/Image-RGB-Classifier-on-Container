@@ -7,13 +7,15 @@
 #-------------------------------------------------------------------------------
 
 import random
-import socket, select
+import socket, select, os
 from time import gmtime, strftime
 from random import randint
 
-image = "tux.png"
 
-HOST = '127.0.0.1'
+image = raw_input("Enter image name: ")
+file_extension = os.path.splitext(image)[1]
+
+HOST = '172.17.0.1'
 PORT = 6666
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -33,8 +35,14 @@ try:
 
     print 'answer = %s' % answer
 
-    # send image to server
     if answer == 'GOT SIZE':
+        sock.sendall("EXT %s" % file_extension)
+        answer = sock.recv(4096)
+
+    print 'answer = %s' % answer
+
+    # send image to server
+    if answer == 'GOT EXT':
         sock.sendall(bytes)
 
         # check what server send
