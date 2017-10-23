@@ -23,4 +23,4 @@ EXPOSE 6666
 #ENV NAME World
 
 # Run python server.py when the container launches
-CMD ["python", "server.py"]
+CMD ["python", "../vol/server.py"]

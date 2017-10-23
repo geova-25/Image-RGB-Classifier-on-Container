@@ -1,0 +1,50 @@
+#---------------------List all containers running
+docker ps
+
+#---------------------List all containers
+docker ps -a
+
+#---------------------See containers and see the short ID
+
+ docker container ls
+
+#---------------------Delete container
+
+ sudo docker image rm img_server_image -f
+
+#---------------------List all images
+
+docker images
+
+#--------------------delete all untaged images
+
+sudo docker rmi $(sudo docker images | grep "<none>")
+
+#---------------------Create Volume
+
+docker volume create images
+
+#---------------------Volume setup
+
+sudo docker run -it -p 6666:6666 -v images:/vol img_server_image
+
+#---------------------Run with expose port
+
+sudo docker run -it -p 6666:6666 img_server_image
+
+#---------------------Build a new image
+
+docker build -t img_server_image .
+
+#---------------------Stop all containers
+
+docker stop $(sudo docker ps -a -q)
+
+#---------------------Remove all containers
+
+docker rm $(sudo docker ps -a -q)
+
+#---------------------Examine container
+
+sudo docker exec -i -t stoic_brown  /bin/bash
+cd ../vol

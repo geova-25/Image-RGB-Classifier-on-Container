@@ -1,3 +1,11 @@
+#-------------------------------------------------------------------------------
+# Instituto Tecnologico de Costa Rica-Area Academica Ingenieria en Computadores
+# Principios de Sistemas Operativos - Tarea Corta 2 - Containers Jobs
+# Estudiante-carnet: Giovanni Villalobos Quiros - 2013030976
+# Based on code from - Basado en codigo tomado de
+# https://stackoverflow.com/questions/42458475/sending-image-over-sockets-only-in-python-image-can-not-be-open
+#-------------------------------------------------------------------------------
+
 import random
 import socket, select
 from time import gmtime, strftime
