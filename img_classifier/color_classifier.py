@@ -20,8 +20,8 @@ def determine_predominant_color(name):
         dominant_color_name = "G"
     else:
         dominant_color_name = "B"
-    print "dominant_color_tuple", dominant_color_tuple
-    print "dominant_color_value", dominant_color_value
+    #print "dominant_color_tuple", dominant_color_tuple
+    #print "dominant_color_value", dominant_color_value
     return dominant_color_name
 
 #img_name = 'saiyayin.jpg'
