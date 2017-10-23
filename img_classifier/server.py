@@ -1,3 +1,12 @@
+#-------------------------------------------------------------------------------
+# Instituto Tecnologico de Costa Rica-Area Academica Ingenieria en Computadores
+# Principios de Sistemas Operativos - Tarea Corta 2 - Containers Jobs
+# Estudiante-carnet: Giovanni Villalobos Quiros - 2013030976
+# Based on code from - Basado en codigo tomado de
+# https://stackoverflow.com/questions/42458475/sending-image-over-sockets-only-in-python-image-can-not-be-open
+#-------------------------------------------------------------------------------
+
+import parser as parserConfig
 import random
 import socket, select
 from time import gmtime, strftime
@@ -16,9 +25,11 @@ server_socket = ""
 notTrustedFolder = "/Not_Trusted"
 HOST = '0.0.0.0'
 PORT = 6666
-notTrustedList = ['192.168.0.104'];
-acceptedList   = ['192.168.0.103'];
 buffer_size = 51200
+notTrustedList, acceptedList  = parserConfig.parse()
+#print "notTrustedList:", notTrustedList
+#print "acceptedList:" , acceptedList
+
 
 #------------------------------------------------------------------------------
 #----This function is in charge of the creation of the folders for the container
@@ -129,7 +140,7 @@ while True:
         if sock == server_socket:
             sockfd, client_address = server_socket.accept()
             print "Peername: " ,sockfd.getpeername()[0]
-            if sockfd.getpeername()[0] in acceptedList:
+            if ((sockfd.getpeername()[0] in acceptedList) or (sockfd.getpeername()[0] in notTrustedList)):
                 sockfd.send("Accepted")
                 connected_clients_sockets.append(sockfd)
                 print "Iniciando socket con host %s" %  connected_clients_sockets.index(sockfd)
