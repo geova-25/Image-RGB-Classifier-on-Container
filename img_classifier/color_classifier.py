@@ -12,18 +12,16 @@ def determine_predominant_color(name):
     color_thief = ColorThief(name)
     # get the dominant color 1 for the quickest but lower accuracy
     dominant_color_tuple = color_thief.get_color(quality=1)
+    #Obtains the maximun value of the tuple
     dominant_color_value = max(dominant_color_tuple)
+    #Obtains the index of it
     dominant_color_index = dominant_color_tuple.index(dominant_color_value)
+    #Index zero means Red, 1 means green and 2 means Blue and return the first lettter capital
+    #to concatenate it to the string of path
     if(dominant_color_index == 0):
         dominant_color_name = "R"
     elif(dominant_color_index == 1):
         dominant_color_name = "G"
     else:
         dominant_color_name = "B"
-    #print "dominant_color_tuple", dominant_color_tuple
-    #print "dominant_color_value", dominant_color_value
     return dominant_color_name
-
-#img_name = 'saiyayin.jpg'
-#dominant_color_name = determine_predominant_color(img_name)
-#print "dominant_color_name", dominant_color_name

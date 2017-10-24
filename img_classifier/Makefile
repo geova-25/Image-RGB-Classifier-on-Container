@@ -1,4 +1,4 @@
-all: show
+all: img
 
 show:
 				echo "----------------------docker ps"
@@ -7,6 +7,9 @@ show:
 				sudo docker ps -a
 				echo "----------------------docker images"
 				sudo docker images
+
+img:
+				sudo docker build -t img_server_classifier .
 
 stop:
 				sudo docker stop $(sudo docker ps -a -q)

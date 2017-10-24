@@ -12,6 +12,7 @@ RUN yum -y update; yum clean all
 RUN yum -y install epel-release; yum clean all
 RUN yum -y install python-pip; yum clean all
 RUN yum -y install net-tools
+RUN yum -y install python-netifaces
 
 #Install some pythons needs
 RUN pip install -r requirements.txt
