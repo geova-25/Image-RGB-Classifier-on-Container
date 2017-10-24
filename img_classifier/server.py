@@ -84,8 +84,8 @@ def reciveImage(data, ip):
         newImagePathClassified = folderNameNew + notTrustedFolder + "/" + str(imgcounter) + imgExtension
     else:
         newImagePathClassified = folderNameNew + "/" + color_classifier.determine_predominant_color(tempImgPath) + "/" + str(imgcounter) + imgExtension
-    print "New path classified", newImagePathClassified
-    print "tempImgPath: ", tempImgPath
+    #print "New path classified", newImagePathClassified
+    #print "tempImgPath: ", tempImgPath
     os.rename(tempImgPath,newImagePathClassified)
     sock.send("GOT IMAGE")
     imgcounter += 1
@@ -102,8 +102,8 @@ def receiveFromSocket(sock):
             tmp = txt.split()
             size = int(tmp[1])
 
-            print 'got size'
-            print 'size is %s' % size
+            #print 'got size'
+            #print 'size is %s' % size
 
             sock.send("GOT SIZE")
 
@@ -117,14 +117,18 @@ def receiveFromSocket(sock):
             buffer_size = 92160000
 
         elif txt.startswith('BYE'):
-            print "Socket Disconecting"
+            #connected_clients_sockets.index(sockfd)
+            print "Host %s Disconected" %  sockfd.getpeername()[0]
             sock.shutdown()
 
         elif data:
+            print "--------------"
+            print "Image Received"
             reciveImage(data, sock.getpeername()[0])
             buffer_size = 4096
+            print "Image Processed"
     except:
-        print "Exception"
+        #print "Exception"
         sock.close()
         connected_clients_sockets.remove(sock)
 
@@ -139,11 +143,11 @@ while True:
 
         if sock == server_socket:
             sockfd, client_address = server_socket.accept()
-            print "Peername: " ,sockfd.getpeername()[0]
+            #print "Peername: " ,sockfd.getpeername()[0]
             if ((sockfd.getpeername()[0] in acceptedList) or (sockfd.getpeername()[0] in notTrustedList)):
                 sockfd.send("Accepted")
                 connected_clients_sockets.append(sockfd)
-                print "Iniciando socket con host %s" %  connected_clients_sockets.index(sockfd)
+                print "Socket initializing with host %s" %  sockfd.getpeername()[0]
             else:
                 sockfd.send("Not Accepted")
                 sockfd.close()
@@ -151,6 +155,5 @@ while True:
 
         else:
             receiveFromSocket(sock)
-
 
 server_socket.close()
