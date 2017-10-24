@@ -21,4 +21,4 @@ def getIpList(configFile):
     #print "listAccepted:   " , listAccepted
 
 def parse():
-        return getIpList("configuracion.config")
+        return getIpList("../carpetaDocker/configuracion.config")

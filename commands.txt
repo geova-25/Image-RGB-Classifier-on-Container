@@ -1,20 +1,20 @@
 #---------------------List all containers running
-docker ps
+sudo docker ps
 
 #---------------------List all containers
-docker ps -a
+sudo docker ps -a
 
 #---------------------See containers and see the short ID
 
- docker container ls
+ sudo docker container ls
 
 #---------------------Delete container
 
- sudo docker image rm img_server_image -f
+sudo docker image rm img_server_classifier -f
 
 #---------------------List all images
 
-docker images
+sudo docker images
 
 #--------------------delete all untaged images
 
@@ -22,30 +22,34 @@ sudo docker rmi $(sudo docker images | grep "<none>")
 
 #---------------------Create Volume
 
-docker volume create images
+sudo docker volume create images
 
 #---------------------Volume setup
 
 #sudo docker run -it -p 6666:6666 -v images:/vol img_server_image
-sudo docker run -it -p 6666:6666 -v /Users/img_classifier:/carpetaDocker/ img_server_image
+sudo docker run -it -p 6666:6666 -v /Users/img_classifier:/carpetaDocker/ img_server_classifier
 
 #---------------------Run with expose port
 
-sudo docker run -it -p 6666:6666 img_server_image
+sudo docker run -it -p 6666:6666 img_server_classifier
 
 #---------------------Build a new image
 
-docker build -t img_server_image .
+sudo docker build -t img_server_classifier .
 
 #---------------------Stop all containers
 
-docker stop $(sudo docker ps -a -q)
+sudo docker stop $(sudo docker ps -a -q)
 
 #---------------------Remove all containers
 
-docker rm $(sudo docker ps -a -q)
+sudo docker rm $(sudo docker ps -a -q)
 
 #---------------------Examine container
 
-sudo docker exec -i -t stoic_brown  /bin/bash
+sudo docker exec -i -t <name>  /bin/bash
 cd ../vol
+
+#---------------------inspect container
+
+sudo docker inspect <id>

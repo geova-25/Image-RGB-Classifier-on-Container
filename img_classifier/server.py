@@ -12,6 +12,7 @@ import socket, select
 from time import gmtime, strftime
 from random import randint
 import color_classifier
+import netifaces as ni
 import os
 
 folderNameOriginal = "../carpetaDocker/containerRun"
@@ -23,12 +24,28 @@ foldersToCreate = ["R","G","B","Not_Trusted"]
 connected_clients_sockets = []
 server_socket = ""
 notTrustedFolder = "/Not_Trusted"
-HOST = '0.0.0.0'
+HOST = "0.0.0.0"
 PORT = 6666
 buffer_size = 51200
 notTrustedList, acceptedList  = parserConfig.parse()
-#print "notTrustedList:", notTrustedList
-#print "acceptedList:" , acceptedList
+print "Server Network info:"
+#print os.system("ip addr | grep \'inet \'")
+#print os.system("ifconfig | grep \'inet addr\' | cut -d: -f2 | awk \'{print $1}\'")
+#Ips =  os.system("ifconfig | grep \'inet addr\' | cut -d: -f2 | awk \'{print $1}\'")
+interfaces = ni.interfaces()
+localAdresses = []
+externalAdresses = []
+#get all the possibles ips on the server
+for inter in interfaces:
+    if(("127" in ni.ifaddresses(inter)[ni.AF_INET][0]['addr'].split(".")) or ("172" in ni.ifaddresses(inter)[ni.AF_INET][0]['addr'].split("."))):
+        localAdresses.append([inter + ":", ni.ifaddresses(inter)[ni.AF_INET][0]['addr']])
+    else:
+        externalAdresses.append([inter + ":", ni.ifaddresses(inter)[ni.AF_INET][0]['addr']])
+#Print address for the user to be easier to get them
+for addr in localAdresses:
+    print "Posible Local Address:           ", "%8s" % addr[0], addr[1]
+for addr in externalAdresses:
+    print "Posible  External/Other Address: ", "%8s" % addr[0], addr[1]
 
 
 #------------------------------------------------------------------------------
@@ -143,7 +160,7 @@ while True:
 
         if sock == server_socket:
             sockfd, client_address = server_socket.accept()
-            #print "Peername: " ,sockfd.getpeername()[0]
+            print "Peername: " ,sockfd.getpeername()[0]
             if ((sockfd.getpeername()[0] in acceptedList) or (sockfd.getpeername()[0] in notTrustedList)):
                 sockfd.send("Accepted")
                 connected_clients_sockets.append(sockfd)
