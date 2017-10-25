@@ -31,6 +31,7 @@ HOST = "0.0.0.0"
 PORT = 6666
 MAX_CONS = 50
 buffer_size = 51200
+dataFinal = ''
 
 #------------------------------------------------------------------------------
 #----Get the data from the config file using the parser.py file imported
@@ -138,13 +139,15 @@ def reciveImage(data, ip):
 #----This function is in charge of the receive data through socket
 
 def receiveFromSocket(sock):
-    global imgExtension, buffer_size
+    global imgExtension, buffer_size, dataFinal
     #If there are available data and not error occured
     try:
         #Obtains data from buffer of socket
-        data = sock.recv(buffer_size)
+        newData = sock.recv(buffer_size)
+        #print newData
+        dataFinal = ''
         #Makes it string to check for Instrucctions
-        txt = str(data)
+        txt = str(newData)
         #If the string is Size
         if txt.startswith('SIZE'):
             tmp = txt.split()
@@ -168,14 +171,30 @@ def receiveFromSocket(sock):
             print "Host %s Disconected" %  sockfd.getpeername()[0]
             #shutdown to block the connection to client of socket
             sock.shutdown()
-        #When if the data of the image
-        elif data:
+        #When is the data of the image
+        elif newData:
             print "--------------"
-            print "Image Received"
+            print "Data Received"
+            print newData
             #Call function received image
-            reciveImage(data, sock.getpeername()[0])
+            if (newData == "~"):
+                print "Aqui 1"
+                print dataFinal
+                reciveImage(dataFinal, sock.getpeername()[0])
+                newData = ''
+                dataFinal = ''
+                print "Image Processed"
+            elif (newData[len(newData)-1] == "~"):
+                print "Aqui 2"
+                dataFinal = dataFinal + newData[:(len(newData)-1)]
+                reciveImage(dataFinal, sock.getpeername()[0])
+                newData = ''
+                dataFinal = ''
+                print "Image Processed"
+            else:
+                dataFinal = dataFinal + newData
             buffer_size = 4096
-            print "Image Processed"
+
     except:
         #In error close the socket or call it after Bye to destroy it
         sock.close()
