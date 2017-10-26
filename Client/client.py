@@ -79,9 +79,7 @@ else:
         if answer == 'GOT EXT':
             #Send data bytes to server
             print 'Sending Image to Server'
-            sock.sendall(bytes+'~')
-            #Send delimiter to close
-            #sock.send('~')
+            sock.sendall(bytes)
             #Waits and check what server send
             answer = sock.recv(4096)
             #If finally the server responds that the image was correctly received then

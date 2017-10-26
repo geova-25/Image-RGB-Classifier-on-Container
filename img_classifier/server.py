@@ -32,6 +32,7 @@ PORT = 6666
 MAX_CONS = 50
 buffer_size = 51200
 dataFinal = ''
+sizeActual = 0
 
 #------------------------------------------------------------------------------
 #----Get the data from the config file using the parser.py file imported
@@ -139,20 +140,20 @@ def reciveImage(data, ip):
 #----This function is in charge of the receive data through socket
 
 def receiveFromSocket(sock):
-    global imgExtension, buffer_size, dataFinal
+    global imgExtension, buffer_size, dataFinal, sizeActual
     #If there are available data and not error occured
     try:
         #Obtains data from buffer of socket
         newData = sock.recv(buffer_size)
         #print newData
-        dataFinal = ''
+        #dataFinal = ''
         #Makes it string to check for Instrucctions
         txt = str(newData)
         #If the string is Size
         if txt.startswith('SIZE'):
             tmp = txt.split()
             #Save the size of the incomming image
-            size = int(tmp[1])
+            sizeActual = int(tmp[1])
             #Notify the client that image size was received
             sock.send("GOT SIZE")
 
@@ -175,24 +176,15 @@ def receiveFromSocket(sock):
         elif newData:
             print "--------------"
             print "Data Received"
-            print newData
+            #Assign de newData
+            dataFinal = newData;
+            #Keep waiting if data is not of that size
+            while(sizeActual != len(dataFinal)):
+                print "Waiting for data"
+                dataFinal = dataFinal + sock.recv(buffer_size);
             #Call function received image
-            if (newData == "~"):
-                print "Aqui 1"
-                print dataFinal
-                reciveImage(dataFinal, sock.getpeername()[0])
-                newData = ''
-                dataFinal = ''
-                print "Image Processed"
-            elif (newData[len(newData)-1] == "~"):
-                print "Aqui 2"
-                dataFinal = dataFinal + newData[:(len(newData)-1)]
-                reciveImage(dataFinal, sock.getpeername()[0])
-                newData = ''
-                dataFinal = ''
-                print "Image Processed"
-            else:
-                dataFinal = dataFinal + newData
+            reciveImage(dataFinal, sock.getpeername()[0]);
+            print "Image Processed"
             buffer_size = 4096
 
     except:
