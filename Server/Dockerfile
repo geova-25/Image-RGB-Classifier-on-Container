@@ -11,16 +11,14 @@ ADD . /app
 RUN yum -y update; yum clean all
 RUN yum -y install epel-release; yum clean all
 RUN yum -y install python-pip; yum clean all
+RUN yum -y install net-tools
+RUN yum -y install python-netifaces
 
 #Install some pythons needs
 RUN pip install -r requirements.txt
-#RUN pip install opencv-python
 
 # Make port 6666 available to the world outside this container
 EXPOSE 6666
 
-# Define environment variable
-#ENV NAME World
-
 # Run python server.py when the container launches
-CMD ["python", "../carpetaDocker/server.py"]
+CMD ["python", "server.py"]
